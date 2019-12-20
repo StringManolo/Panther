@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.stringmanolo.panther"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="25" />
+
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/panthera2"
+        android:label="@string/app_name"
+      
+
+        android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
+             
+
+        <activity android:name="com.stringmanolo.panther.MainActivity"
+android:configChanges="orientation|screenSize">
+        
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                
+                <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+                
+                
+               
+                
+                
+                
+                
+                
+                
+                
+            </intent-filter>
+        </activity>
+ 
+ 
+ 
+ <activity android:name="com.stringmanolo.panther.ActividadArchivos"
+              android:parentActivityName="com.stringmanolo.panther.MainActivity">
+        <!-- The meta-data tag is required if you support API level 15 and lower 
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="MainActivity" /> -->
+    </activity>
+    
+ <activity android:name="com.stringmanolo.panther.ActividadMotorDeBusqueda"
+              android:parentActivityName="com.stringmanolo.panther.MainActivity">
+        <!-- The meta-data tag is required if you support API level 15 and lower 
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="MainActivity" /> -->
+    </activity>
+    
+<activity android:name="com.stringmanolo.panther.ActividadHacking"
+              android:parentActivityName="com.stringmanolo.panther.MainActivity">
+        <!-- The meta-data tag is required if you support API level 15 and lower 
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="MainActivity" /> -->
+    </activity>      
+        
+
+    </application>
+
+</manifest>
