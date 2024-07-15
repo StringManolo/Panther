@@ -1,25 +1,26 @@
 # Panther
 
-Panther is a privacy focused Android Browser based on WebView.
+Panther is a privacy-focused Android browser based on WebView.
 
-### Download Lastest Version
+### Download Latest Version
 [Panther\_stable\_ver.1.0.2.apk](https://github.com/StringManolo/Panther/releases/download/V1.0.2/Panther_stable_ver.1.0.2.apk)
 
 ### Features
-- Most Basic Browser Features
-- Use Hardcoded UserAgent by default:
-  - Usually UserAgents reveal your operative system and browser version to every single web you visit.
-  - Even browsers like Tor Browser do not fix this. And when they do, they only overwrite the HTTP headers to fake it.
-  - Panther actually overwrites the navigator.useragent property to protect you from javascript fingerprint attacks too.
-  - This is important to give you extra privacy and security, protecting you from Automated Web Xploit Kits.
-  - "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.122 Mobile Safari/537.36"
-- Editable UserAgent _Hacking -> User-Agent -> Set your own and tap the "IR" button_
+- Basic Browser Functionality
+- Hardcoded User-Agent by default:
+  - User-Agents typically reveal your operating system and browser version to every website you visit.
+  - Even browsers like Tor Browser do not fully address this issue. When they do, they only overwrite the HTTP headers to fake it.
+  - Panther overwrites the `navigator.userAgent` property to protect you from JavaScript fingerprinting attacks.
+  - This enhances your privacy and security, protecting you from automated web exploit kits.
+  - Default User-Agent: "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.122 Mobile Safari/537.36"
+- Editable User-Agent: _Go to Hacking -> User-Agent -> Set your own and tap the "IR" button_
 - Change Search Engine
 - Allows Zoom In/Out even when webpages try to disable it
-- Clears internal history after opening the Browser:
-  - Internal history is only saved to allow you to go back and forward between pages
-- Clears internal cache after opening the Browser;
-  - Internal Cache is only saved during the session for faster loading of pages;
-- Special Urls:
-  - #code _shows renderized source code_
-  - #cookie _shows website cookies_
+- Clears internal history upon opening the browser:
+  - Internal history is only saved to allow navigation between pages
+- Clears internal cache upon opening the browser:
+  - Internal cache is only saved during the session for faster page loading
+- Special URLs:
+  - `#code` - Shows rendered source code
+  - `#cookie` - Shows website cookies
+
