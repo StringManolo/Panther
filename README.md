@@ -3,7 +3,7 @@
 Panther is a privacy focused Android Browser based on WebView.
 
 ### Download Lastest Version
-[Panther\_stable\_ver.1.0.1.apk](https://github.com/StringManolo/Panther/releases/download/V1.0.1/Panther_stable_ver.1.0.1.apk)
+[Panther\_stable\_ver.1.0.2.apk](https://github.com/StringManolo/Panther/releases/download/V1.0.2/Panther_stable_ver.1.0.2.apk)
 
 ### Features
 - Most Basic Browser Features
