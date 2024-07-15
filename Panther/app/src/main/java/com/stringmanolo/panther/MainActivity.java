@@ -122,7 +122,8 @@ public class MainActivity extends Activity {
 
     String userAgent = new WebView(this).getSettings().getUserAgentString();
 
-    String userAgentModificado = userAgent + " Panther/1.0.1";
+ /* String userAgentModificado = userAgent + " Panther/1.0.1"; */
+    String userAgentModificado = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.122 Mobile Safari/537.36";
     CuserAgent = userAgentModificado; 
     Panther.getSettings().setUserAgentString(userAgentModificado);
 

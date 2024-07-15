@@ -7,6 +7,12 @@ Panther is a privacy focused Android Browser based on WebView.
 
 ### Features
 - Most Basic Browser Features
+- Use Hardcoded UserAgent by default:
+  - Usually UserAgents reveal your operative system and browser version to every single web you visit.
+  - Even browsers like Tor Browser do not fix this. And when they do, they only overwrite the HTTP headers to fake it.
+  - Panther actually overwrites the navigator.useragent property to protect you from javascript fingerprint attacks too.
+  - This is important to give you extra privacy and security, protecting you from Automated Web Xploit Kits.
+  - "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.122 Mobile Safari/537.36"
 - Editable UserAgent _Hacking -> User-Agent -> Set your own and tap the "IR" button_
 - Change Search Engine
 - Allows Zoom In/Out even when webpages try to disable it
