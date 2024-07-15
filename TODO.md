@@ -3,5 +3,5 @@
 - Allow user to configure the use of javascript
 - Allow user to configure the use of localstorage
 - Allow user to ser default search engine
-- Fix old Search Engines url
+- Fix old Search Engines url (add engines from userlookup)
 - Get current URL to show in omnibox
