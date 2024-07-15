@@ -100,7 +100,7 @@ public class MainActivity extends Activity {
     textView.setVisibility(View.INVISIBLE);
 
     if (Build.VERSION.SDK_INT < 18) {
-      Panther.getSettings().setRenderPriority(RenderPriority.HIGH);            
+      /* Panther.getSettings().setRenderPriority(RenderPriority.HIGH); */          
     }
 
     Panther.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -108,7 +108,13 @@ public class MainActivity extends Activity {
     Panther.getSettings().setDomStorageEnabled(true);
     Panther.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
     Panther.setScrollbarFadingEnabled(true);
-
+    /*
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      Panther.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+    } else {
+      Panther.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+    }
+    */
     Panther.clearHistory(); 
     Panther.clearCache(true);
     Panther.clearFormData();
