@@ -6,3 +6,5 @@
 - Fix old Search Engines url (add engines from userlookup)
 - Get current URL to show in omnibox
 - Allow to change default webpage
+- Add new privacy overrides (like battery status)
+- Allow to use System's Tor Proxy
