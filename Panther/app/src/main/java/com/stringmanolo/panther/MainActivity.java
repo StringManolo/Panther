@@ -1,4 +1,3 @@
-
 package com.stringmanolo.panther;
 
 import com.stringmanolo.panther.R;
@@ -31,7 +30,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.webkit.ConsoleMessage;
 import android.webkit.ValueCallback;
-
+import android.webkit.WebStorage;
+import java.io.File;
+import android.app.DownloadManager;
+import android.content.Context;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.webkit.DownloadListener;
+import android.webkit.URLUtil;
 
 public class MainActivity extends Activity {
   Intent intentArchivos = null;
@@ -58,7 +65,8 @@ public class MainActivity extends Activity {
   String CuserAgent;
   String UAI = "";
   String VS = "";
-  String SSE = "https://google.com/search?q=";
+  /* String SSE = "https://google.com/search?q="; */
+  String SSE = "https://html.duckduckgo.com/html/?q=";
   int progress = 0;
 
   @Override
@@ -89,12 +97,12 @@ public class MainActivity extends Activity {
         String value = adapter.getItem(position);
         /* Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();  */
 
-        if (value.equals("Motor De Busqueda")) {
+        if (value.equals("Search Engine")) {
           intentMotorDeBusq = new Intent(MainActivity.this, ActividadMotorDeBusqueda.class);
           startActivityForResult(intentMotorDeBusq, CODEMotorIntent);
         }
 
-        if (value.equals("Codigo Fuente")) {
+        if (value.equals("Source Code")) {
           Panther.loadUrl("javascript:document.write(\"<xmp contenteditable=\\\"true\\\" style=\\\"width:100%;height:300px;overflow-y:scroll;background-color:#336699;color:white;align:center\\\">\"+document.getElementsByTagName('html')[0].outerHTML+\"</xmp>\"+document.getElementsByTagName('html')[0].outerHTML);");
         }
 
@@ -115,6 +123,28 @@ public class MainActivity extends Activity {
             executeButton.setVisibility(View.VISIBLE);
           }
         }
+        
+        if (value.equals("Exit")) {
+          Panther.clearCache(true);
+          Panther.clearFormData();
+   
+          CookieManager.getInstance().removeSessionCookies(null);
+          CookieManager.getInstance().removeAllCookies(null);
+          Panther.clearHistory();
+          WebStorage.getInstance().deleteAllData();
+          
+          /* Delete internal cache folder */
+          File cacheDir = getCacheDir();
+          if (cacheDir.isDirectory()) {
+            String[] files = cacheDir.list();
+            for (String file : files) {
+              File temp = new File(cacheDir, file);
+              temp.delete();
+            }
+          }
+          
+          finish();
+        }
       }
     });
 
@@ -129,11 +159,7 @@ public class MainActivity extends Activity {
     Panther.getSettings().setLoadWithOverviewMode(true);
     Panther.getSettings().setDomStorageEnabled(true);
     Panther.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-    Panther.setScrollbarFadingEnabled(true);
-
-    Panther.clearHistory();
-    Panther.clearCache(true);
-    Panther.clearFormData();
+    Panther.setScrollbarFadingEnabled(true); 
     Panther.getSettings().setJavaScriptEnabled(true);
 
     String userAgent = new WebView(this).getSettings().getUserAgentString();
@@ -144,6 +170,7 @@ public class MainActivity extends Activity {
     Panther.getSettings().setUseWideViewPort(true);
     Panther.getSettings().setLoadWithOverviewMode(true);
     Panther.getSettings().setBuiltInZoomControls(true);
+
 
     Panther.setWebViewClient(new WebViewClient() {
       @Override
@@ -169,7 +196,7 @@ public class MainActivity extends Activity {
         if (!dialogShowing) {
           dialogShowing = true;
           AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-          builder.setMessage(message).setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+          builder.setMessage(message).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
               result.confirm();
@@ -187,13 +214,13 @@ public class MainActivity extends Activity {
         if (!dialogShowing) {
           dialogShowing = true;
           AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-          builder.setMessage(message).setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+          builder.setMessage(message).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
               result.confirm();
               dialogShowing = false;
             }
-          }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+          }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
               result.cancel();
@@ -214,14 +241,14 @@ public class MainActivity extends Activity {
 
           AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
           builder.setMessage(message).setView(input)
-            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
               @Override
               public void onClick(DialogInterface dialog, int which) {
                 String value = input.getText().toString();
                 result.confirm(value);
                 dialogShowing = false;
               }
-            }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
               @Override
               public void onClick(DialogInterface dialog, int which) {
                 result.cancel();
@@ -238,10 +265,10 @@ public class MainActivity extends Activity {
     url = (EditText) findViewById(R.id.url);
     url.setText("PANTHER");
 
-    Panther.loadUrl("http://www.google.com");
-
-
-
+    /* Panther.loadUrl("http://www.google.com"); */
+    /* Panther.loadUrl("https://www.startpage.com"); */
+    /* This configures the Search Engine for Privacy before usage */
+    Panther.loadUrl("https://www.startpage.com/do/mypage.pl?prfe=449a86aead17f960544d34b1551bb169bc5a2a309ac760de96cf64a4273cee7234af643ebc051ef75227121e6b14d907cc8322d8ff38fcc5edf75d4fdc9358c4fe551829452f29e105cbf242ba");
 
     // Define una instancia de ValueCallback fuera del método onClick
     final ValueCallback < String > resultCallback = new ValueCallback < String > () {
@@ -260,6 +287,9 @@ public class MainActivity extends Activity {
         Panther.evaluateJavascript(jsCommand, resultCallback);
       }
     });
+    
+    
+    Panther.setDownloadListener(new MyDownloadListener());
   }
 
   public void ir(View view) {
@@ -332,6 +362,33 @@ public class MainActivity extends Activity {
       if (resultCode == RESULT_OK) {
         userAgentHacking = data.getStringExtra("OpcionHacking");
         Panther.getSettings().setUserAgentString(userAgentHacking);
+      }
+    }
+  }
+  
+  
+  private class MyDownloadListener implements DownloadListener {
+    @Override
+    public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+      String fileName = URLUtil.guessFileName(url, contentDisposition, mimetype);
+      DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+      request.setMimeType(mimetype);
+      request.addRequestHeader("User-Agent", userAgent);
+      request.setDescription("Descargando archivo");
+      request.setTitle(fileName);
+
+      File downloadsDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Panther_Downloads");
+      if (!downloadsDirectory.exists()) {
+        downloadsDirectory.mkdirs();
+      }
+
+      request.setDestinationUri(Uri.fromFile(new File(downloadsDirectory, fileName)));
+      DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+      if (downloadManager != null) {
+        downloadManager.enqueue(request);
+        Toast.makeText(getApplicationContext(), "Descargando en Download/Panther_Downloads/", Toast.LENGTH_SHORT).show();
+      } else {
+        Toast.makeText(getApplicationContext(), "DownloadManager no está disponible", Toast.LENGTH_SHORT).show();
       }
     }
   }

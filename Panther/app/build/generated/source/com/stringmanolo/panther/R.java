@@ -10,6 +10,19 @@ package com.stringmanolo.panther;
 public final class R {
     public static final class array {
         public static final int array_technology=0x7f050000;
+        /** 
+    <item>option3</item>
+    <item>option4</item>
+    <item>option5</item>
+    <item>option6</item>
+    <item>option7</item>
+    <item>option8</item>
+    <item>option9</item>
+    <item>option10</item>
+    <item>option11</item>
+    <item>CUSTOM</item>
+    
+         */
         public static final int hacking=0x7f050002;
         public static final int motores_busqueda=0x7f050001;
     }

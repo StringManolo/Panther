@@ -5,6 +5,8 @@ Panther is a privacy-focused Android browser based on WebView.
   
 
 ### Features
+
+
 - Console support
   - Add a console to view the console.log in Android, run commands, etc
 <br>  
@@ -20,7 +22,7 @@ Panther is a privacy-focused Android browser based on WebView.
   - Default User-Agent: "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.122 Mobile Safari/537.36"
 <br>
 
-- Editable User-Agent: _Go to Hacking -> User-Agent -> Set your own and tap the "IR" button_
+- Editable User-Agent: _Go to Hacking -> User-Agent -> Set your own and tap the "GO" button_
 <br>
 
 - Change Search Engine
