@@ -374,7 +374,7 @@ public class MainActivity extends Activity {
       DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
       request.setMimeType(mimetype);
       request.addRequestHeader("User-Agent", userAgent);
-      request.setDescription("Descargando archivo");
+      request.setDescription("Downloading File ...");
       request.setTitle(fileName);
 
       File downloadsDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Panther_Downloads");
@@ -386,9 +386,9 @@ public class MainActivity extends Activity {
       DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
       if (downloadManager != null) {
         downloadManager.enqueue(request);
-        Toast.makeText(getApplicationContext(), "Descargando en Download/Panther_Downloads/", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Downloading: Download/Panther_Downloads/", Toast.LENGTH_SHORT).show();
       } else {
-        Toast.makeText(getApplicationContext(), "DownloadManager no está disponible", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "DownloadManager not available", Toast.LENGTH_SHORT).show();
       }
     }
   }
