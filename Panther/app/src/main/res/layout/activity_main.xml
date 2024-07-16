@@ -3,187 +3,127 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="@drawable/barrabusquedaurl"  
-          >
-     
-     
-     
-     
-     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/barrabusquedaurl">
+
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
-  <WebView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/webkit"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-            android:layout_marginTop="46dp"
-              />
-  
-    
-  <View
-    android:id="@+id/RectanguloMenuIcono"
-     
-    
-    android:scrollbars="vertical" 
-   
-android:layout_alignParentLeft="true"
-                  
-        android:animationCache="false"
- android:scrollingCache="false"
- android:smoothScrollbar="true" 
- android:layout_marginTop="44dp"
-          android:layout_alignParentTop="true"
-    
-    android:layout_width="200dp"
-       
-    android:layout_height="250dp"
-       android:background="@drawable/fondo_menu_icono"   
- />
- 
-   <ListView  
-        android:id="@+id/listView"  
-        android:layout_marginTop="44dp"
-          android:layout_alignParentTop="true"
-    
-    android:layout_width="200dp"
-       
-    android:layout_height="250dp"
-       
-         />  
- 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"  
-    android:id="@+id/textView"  
-    
-    
-    android:textStyle="bold"  
-    android:textAppearance="?android:attr/textAppearanceMedium"  
-     
-    android:textColor="#4d4d4d"  
-    
-    
-       android:scrollbars="vertical" 
-   android:layout_alignParentLeft="true"
-                  
-         android:layout_marginTop="44dp"
-          android:layout_alignParentTop="true"
-    
-    android:layout_width="200dp"
-       
-    android:layout_height="250dp"
-       
-    
-     />
+        <WebView
+            android:id="@+id/webkit"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="46dp" />
 
- <ImageView
-         android:id="@+id/favicon"
-          android:layout_width="32dp"
-          android:layout_height="32dp"
-          android:layout_alignBottom="@+id/url"
-          android:layout_alignParentLeft="true"
-                   android:layout_marginLeft="6dp"
-          android:layout_alignParentTop="true"
-    android:onClick="Config"     
-          
-          
-          android:src="@drawable/panthera2" />   
-           
 
-    
-    
+
+
+        <TextView
+            android:id="@+id/consoleOutput"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#000000"
+            android:textColor="#FFFFFF"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="90dp"
+            android:scrollbars="vertical"
+            android:layout_alignParentBottom="true"
+            android:gravity="bottom|left"
+            android:textIsSelectable="true"/>
+
         <EditText
-            android:id="@+id/url"
-           
-      
+            android:id="@+id/consoleInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter JavaScript Command"
+            android:layout_above="@+id/executeButton"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/executeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            
+            android:text="Execute"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"/>
+
+
+
+
+
+        <View
+            android:id="@+id/RectanguloMenuIcono"
+            android:layout_width="200dp"
+            android:layout_height="250dp"
+            android:background="@drawable/fondo_menu_icono"
+            android:layout_marginTop="44dp"
+            android:layout_alignParentTop="true" />
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="200dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="44dp"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="200dp"
+            android:layout_height="250dp"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#4d4d4d"
+            android:scrollbars="vertical"
+            android:layout_marginTop="44dp"
+            android:layout_alignParentTop="true" />
+
+        <ImageView
+            android:id="@+id/favicon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignBottom="@+id/url"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="6dp"
             android:layout_alignParentTop="true"
-  
-android:layout_toRightOf="@+id/favicon"          
-             
+            android:onClick="Config"
+            android:src="@drawable/panthera2" />
+
+        <EditText
+            android:id="@+id/url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/favicon"
             android:layout_toLeftOf="@+id/buttonIr"
             android:ems="5"
-           
-android:layout_marginLeft="6dp"
-                       android:layout_marginTop="4dp"
-             android:inputType="textUri"
-            android:selectAllOnFocus="true">
-            
-       
-        </EditText>
- 
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="4dp"
+            android:inputType="textUri"
+            android:selectAllOnFocus="true" />
+
         <Button
             android:id="@+id/buttonIr"
-           android:layout_width="wrap_content"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/url"
             android:layout_alignBottom="@+id/url"
             android:layout_alignParentRight="true"
             android:text="@string/ir"
-            android:onClick="ir"
-            />
- 
- 
+            android:onClick="ir" />
 
- 
-   <!--     <Button
-            android:id="@+id/buttonAnt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/url"
-            android:enabled="false"
-            android:onClick="anterior"
-            android:text="@string/anterior" />
- 
-        <Button
-            android:id="@+id/buttonSig"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/url"
-            android:layout_toRightOf="@+id/buttonAnt"
-            android:enabled="false"
-            android:onClick="siguiente"
-            android:text="@string/siguiente" />
- 
-        <Button
-            android:id="@+id/buttonDetener"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/url"
-            android:layout_toRightOf="@+id/buttonSig"
-            android:enabled="false"
-            android:onClick="detener"
-            android:text="@string/detener" />  
-     
-     -->       
- 
-  
-  
- 
     </RelativeLayout>
-     
-     <ProgressBar
+
+    <ProgressBar
         android:id="@+id/progressbar"
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        
-        
-        
         android:layout_margin="3dp"
-        android:visibility="gone"/>
- 
+        android:visibility="gone" />
 
-
-
- <!--android:layout_width="wrap_content"
-       -->
-        
- 
- 
 </LinearLayout>

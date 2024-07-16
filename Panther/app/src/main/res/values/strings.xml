@@ -15,16 +15,19 @@
    
     <string-array name="array_technology">  
         <item>Motor De Busqueda</item>  
-        <item>Codigo Fuente</item>  
+        <item>Codigo Fuente</item>
+        <item>Console</item>  
+      <!--
         <item>Guardar Pagina</item> 
         <item>Interfaz</item>  
         <item>Historial</item>  
         <item>Tecnologías</item>  
         <item>Compartir</item>  
         <item>Acerca De</item>  
-        <item>Buscar</item>  
+        <item>Buscar</item>
+        <item>Favoritos</item> 
+      -->
         <item>Vista de Ordenador</item>  
-        <item>Favoritos</item>  
         <item>Hacking</item>
         <item>Salir</item>  
     </string-array>  
