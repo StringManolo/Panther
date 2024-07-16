@@ -1,11 +1,10 @@
-# Panther &nbsp; &nbsp; &nbsp; &nbsp; [![Download Panther](https://img.shields.io/badge/Download-Panther-blue)](https://github.com/StringManolo/Panther/releases/download/V1.0.3/Panther_stable_ver.1.0.3.apk)
+# Panther &nbsp; &nbsp; &nbsp; &nbsp; [![Download Panther](https://img.shields.io/badge/Download-Panther-blue)](https://github.com/StringManolo/Panther/releases/download/V1.0.4/Panther_stable_ver.1.0.4.apk)
 
 
 Panther is a privacy-focused Android browser based on WebView.  
   
 
 ### Features
-
 
 - Console support
   - Add a console to view the console.log in Android, run commands, etc
