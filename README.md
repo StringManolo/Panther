@@ -8,6 +8,7 @@ Panther is a privacy-focused Android browser based on WebView.
 - Blocker
   - Blocks common AD servers by replacing the downloaded AD by a custom file
   - Blocks common Trackers by replacing the downloaded javascript by a custom file
+  - You can Enable/Disable the Blocker
 <br>
 
 - Console support
