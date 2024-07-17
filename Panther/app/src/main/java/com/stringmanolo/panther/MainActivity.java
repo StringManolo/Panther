@@ -39,6 +39,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.webkit.DownloadListener;
 import android.webkit.URLUtil;
+import android.webkit.PermissionRequest;
 
 public class MainActivity extends Activity {
   Intent intentArchivos = null;
@@ -68,6 +69,7 @@ public class MainActivity extends Activity {
   /* String SSE = "https://google.com/search?q="; */
   String SSE = "https://html.duckduckgo.com/html/?q=";
   int progress = 0;
+  boolean jsEnabled = true;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -123,6 +125,17 @@ public class MainActivity extends Activity {
             executeButton.setVisibility(View.VISIBLE);
           }
         }
+
+        if (value.equals("Javascript")) {   
+          if (jsEnabled) {
+            jsEnabled = false;
+            Toast.makeText(getApplicationContext(), "Javascript is now disabled", Toast.LENGTH_SHORT).show();
+          } else {
+            jsEnabled = true;
+            Toast.makeText(getApplicationContext(), "Javascript is now enabled", Toast.LENGTH_SHORT).show();
+          }
+          Panther.getSettings().setJavaScriptEnabled(jsEnabled);
+        }
         
         if (value.equals("Exit")) {
           Panther.clearCache(true);
@@ -173,13 +186,40 @@ public class MainActivity extends Activity {
 
 
     Panther.setWebViewClient(new WebViewClient() {
+      @Override 
+      public void onPageFinished(WebView view, String url) {
+        super.onPageFinished(view, url);
+      }
+
       @Override
       public boolean shouldOverrideUrlLoading(WebView view, String url) {
         return false;
       }
     });
 
-    Panther.setWebChromeClient(new WebChromeClient() {
+    Panther.setWebChromeClient(new WebChromeClient() { 
+      @Override
+      public void onPermissionRequest(final PermissionRequest request) {
+        final String[] requestedPermissions = request.getResources();
+        
+        new AlertDialog.Builder(MainActivity.this)
+        .setTitle("Permission Request")
+        .setMessage("The website is requesting permission to access device resources.")
+        .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            request.grant(requestedPermissions);
+          }
+        })
+        .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            request.deny();
+          }
+        })
+        .show();
+      }
+ 
       @Override
       public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
         String message = consoleMessage.message() + " -- From line " +

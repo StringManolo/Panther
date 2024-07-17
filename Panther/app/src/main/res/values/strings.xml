@@ -8,6 +8,7 @@
 
   <string-array name="array_technology">
     <item>Console</item>
+    <item>Javascript</item>
     <item>Search Engine</item>
     <item>Source Code</item>
     <!--

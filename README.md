@@ -27,6 +27,9 @@ Panther is a privacy-focused Android browser based on WebView.
 - Change Search Engine
 <br>
 
+- Disable/Enable Javascript
+<br>
+
 - Allows Zoom In/Out even when webpages try to disable it
 <br>
 
