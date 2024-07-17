@@ -4,11 +4,12 @@ int array motores_busqueda 0x7f050001
 int drawable barrabusquedaurl 0x7f020000
 int drawable barraedittext 0x7f020001
 int drawable barraedittext2 0x7f020002
-int drawable fondo_menu_icono 0x7f020003
-int drawable ic_launcher 0x7f020004
-int drawable panthera 0x7f020005
-int drawable panthera2 0x7f020006
-int drawable patair 0x7f020007
+int drawable consoleborder 0x7f020003
+int drawable fondo_menu_icono 0x7f020004
+int drawable ic_launcher 0x7f020005
+int drawable panthera 0x7f020006
+int drawable panthera2 0x7f020007
+int drawable patair 0x7f020008
 int id ListaArchivos 0x7f07000b
 int id RectanguloMenuIcono 0x7f070004
 int id buttonIr 0x7f070009

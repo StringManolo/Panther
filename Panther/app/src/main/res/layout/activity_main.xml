@@ -20,12 +20,12 @@
             android:id="@+id/consoleOutput"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="#000000"
+            android:background="@drawable/consoleborder"
             android:textColor="#FFFFFF"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
             android:paddingRight="10dp"
-            android:paddingBottom="90dp"
+            android:paddingBottom="40dp"
             android:scrollbars="vertical"
             android:layout_alignParentBottom="true"
             android:gravity="bottom|left"
@@ -36,9 +36,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter JavaScript Command"
-            android:layout_above="@+id/executeButton"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="10dp"/>
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:layout_alignParentBottom="true" android:layout_toLeftOf="@+id/executeButton"
+            
+            />
 
         <Button
             android:id="@+id/executeButton"
@@ -46,8 +49,9 @@
             android:layout_height="wrap_content"
             android:text="Execute"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="10dp"/>
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            />
 
         <View
             android:id="@+id/RectanguloMenuIcono"
