@@ -40,6 +40,16 @@ import android.os.Environment;
 import android.webkit.DownloadListener;
 import android.webkit.URLUtil;
 import android.webkit.PermissionRequest;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class MainActivity extends Activity {
   Intent intentArchivos = null;
@@ -70,6 +80,7 @@ public class MainActivity extends Activity {
   String SSE = "https://html.duckduckgo.com/html/?q=";
   int progress = 0;
   boolean jsEnabled = true;
+  boolean blockerEnabled = true;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -136,6 +147,16 @@ public class MainActivity extends Activity {
           }
           Panther.getSettings().setJavaScriptEnabled(jsEnabled);
         }
+
+        if (value.equals("Blocker")) {
+          if (blockerEnabled) {
+            blockerEnabled = false;
+            Toast.makeText(getApplicationContext(), "Blocker is now disabled", Toast.LENGTH_SHORT).show();
+          } else {
+            blockerEnabled = true;
+            Toast.makeText(getApplicationContext(), "Blocker is now removing ads and trackers", Toast.LENGTH_SHORT).show();
+          }
+        }
         
         if (value.equals("Exit")) {
           Panther.clearCache(true);
@@ -161,8 +182,12 @@ public class MainActivity extends Activity {
       }
     });
 
+    /* Hidden by default */
     listView.setVisibility(View.INVISIBLE);
     textView.setVisibility(View.INVISIBLE);
+    consoleOutput.setVisibility(View.INVISIBLE);
+    consoleInput.setVisibility(View.INVISIBLE);
+    executeButton.setVisibility(View.INVISIBLE);
 
     if (Build.VERSION.SDK_INT < 18) {
       /* Panther.getSettings().setRenderPriority(RenderPriority.HIGH); */
@@ -185,7 +210,64 @@ public class MainActivity extends Activity {
     Panther.getSettings().setBuiltInZoomControls(true);
 
 
+
     Panther.setWebViewClient(new WebViewClient() {
+      @Override
+    public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+        String url = request.getUrl().toString();
+        
+        // Leer las URLs de adservers.txt en assets
+        List<String> adServers = loadAdServersFromAssets(view.getContext());
+        
+        // Verificar si la URL solicitada coincide con alguna URL de adservers.txt
+        if (blockerEnabled != false && adServers != null  && adServers.size() > 0) {
+            for (String adServerUrl : adServers) {
+                if (url.contains(adServerUrl)) {
+                    String adBlockerCode = "" 
+                      + "<!doctype html><html><head><meta charset='utf-8'></head>"
+                      + "<body><h1>Panther AD Blocker</h1>" 
+                      + "Blocked '" + adServerUrl + "' AD Server."
+                      + "</body></html>";
+                    InputStream adBlockerPage = new ByteArrayInputStream(adBlockerCode.getBytes(StandardCharsets.UTF_8));
+                    return new WebResourceResponse("text/html", "utf-8", adBlockerPage);
+                }
+            }
+        }
+        
+        // Permitir todas las demás solicitudes
+        return super.shouldInterceptRequest(view, request);
+      }
+
+      private List<String> loadAdServersFromAssets(Context context) {
+    List<String> adServers = new ArrayList<>();
+    BufferedReader reader = null;
+    try {
+        // Abrir el archivo adservers.txt en assets
+        InputStream is = context.getAssets().open("adservers.txt");
+        reader = new BufferedReader(new InputStreamReader(is));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            // Agregar cada línea (que representa una URL de servidor de anuncios) a la lista
+            adServers.add(line.trim()); // trim() para eliminar espacios en blanco al inicio y final
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    } finally {
+        if (reader != null) {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    return adServers;
+}
+
+
+
+
+
       @Override 
       public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);

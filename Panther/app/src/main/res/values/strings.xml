@@ -7,6 +7,7 @@
   <string name="title_activity_main">MAIN_ACTIVITY</string>
 
   <string-array name="array_technology">
+    <item>Blocker</item>
     <item>Console</item>
     <item>Javascript</item>
     <item>Search Engine</item>
