@@ -17,6 +17,7 @@ Panther is a privacy-focused Android browser based on WebView.
 - Console support
   - Add a console to view the console.log in Android, run commands, etc
 <br>  
+
 - InApp Logs
   - You can view all the requests the browser sends
   - You can view all the requests blocked by Panther_Blocker
