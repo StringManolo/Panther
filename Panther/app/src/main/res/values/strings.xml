@@ -10,6 +10,7 @@
     <item>Blocker</item>
     <item>Console</item>
     <item>Javascript</item>
+    <item>Logs</item>
     <item>Search Engine</item>
     <item>Source Code</item>
     <!--
@@ -43,7 +44,6 @@
 
   <string-array name="hacking">
     <item>User-Agent</item>
-    <item>Pseudo-Protocol</item>
     <!--
     <item>option3</item>
     <item>option4</item>

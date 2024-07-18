@@ -3,8 +3,7 @@
 - Allow user to configure the use of javascript
 - Allow user to configure the use of localstorage
 - Allow user to set default search engine
-- Fix old Search Engines url (add engines from userlookup)
-- Get current URL to show in omnibox
+- Add more search engines from userlookup?
 - Allow to change default webpage
 - Add new privacy overrides (like battery status) This seems very hard to do.
 - Allow to use System's Tor Proxy

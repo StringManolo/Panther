@@ -50,6 +50,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import android.graphics.Typeface;
+import android.widget.ScrollView;
+import android.os.Handler;
+import android.os.Looper;
 
 public class MainActivity extends Activity {
   Intent intentArchivos = null;
@@ -68,6 +72,8 @@ public class MainActivity extends Activity {
   private TextView textView;
   private String[] listItem;
 
+  private TextView logsOutput;
+
   private TextView consoleOutput;
   private EditText consoleInput;
   private Button executeButton;
@@ -76,7 +82,6 @@ public class MainActivity extends Activity {
   String CuserAgent;
   String UAI = "";
   String VS = "";
-  /* String SSE = "https://google.com/search?q="; */
   String SSE = "https://html.duckduckgo.com/html/?q=";
   int progress = 0;
   boolean jsEnabled = true;
@@ -88,6 +93,9 @@ public class MainActivity extends Activity {
     setContentView(R.layout.activity_main);
 
     Panther = (WebView) findViewById(R.id.webkit);
+
+    logsOutput = (TextView) findViewById(R.id.logsOutput);
+
     consoleOutput = (TextView) findViewById(R.id.consoleOutput);
     consoleInput = (EditText) findViewById(R.id.consoleInput);
     executeButton = (Button) findViewById(R.id.executeButton);
@@ -108,8 +116,6 @@ public class MainActivity extends Activity {
       @Override
       public void onItemClick(AdapterView < ? > adapterView, View view, int position, long l) {
         String value = adapter.getItem(position);
-        /* Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();  */
-
         if (value.equals("Search Engine")) {
           intentMotorDeBusq = new Intent(MainActivity.this, ActividadMotorDeBusqueda.class);
           startActivityForResult(intentMotorDeBusq, CODEMotorIntent);
@@ -134,6 +140,14 @@ public class MainActivity extends Activity {
             consoleOutput.setVisibility(View.VISIBLE);
             consoleInput.setVisibility(View.VISIBLE);
             executeButton.setVisibility(View.VISIBLE);
+          }
+        }
+
+        if (value.equals("Logs")) {
+          if (logsOutput.getVisibility() == View.VISIBLE) {
+            logsOutput.setVisibility(View.INVISIBLE);
+          } else {
+            logsOutput.setVisibility(View.VISIBLE);
           }
         }
 
@@ -185,6 +199,7 @@ public class MainActivity extends Activity {
     /* Hidden by default */
     listView.setVisibility(View.INVISIBLE);
     textView.setVisibility(View.INVISIBLE);
+    logsOutput.setVisibility(View.INVISIBLE);
     consoleOutput.setVisibility(View.INVISIBLE);
     consoleInput.setVisibility(View.INVISIBLE);
     executeButton.setVisibility(View.INVISIBLE);
@@ -200,7 +215,7 @@ public class MainActivity extends Activity {
     Panther.setScrollbarFadingEnabled(true); 
     Panther.getSettings().setJavaScriptEnabled(true);
 
-    String userAgent = new WebView(this).getSettings().getUserAgentString();
+    //String userAgent = new WebView(this).getSettings().getUserAgentString();
     String userAgentModificado = "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.122 Mobile Safari/537.36";
     CuserAgent = userAgentModificado;
     Panther.getSettings().setUserAgentString(userAgentModificado);
@@ -209,72 +224,99 @@ public class MainActivity extends Activity {
     Panther.getSettings().setLoadWithOverviewMode(true);
     Panther.getSettings().setBuiltInZoomControls(true);
 
-
+    consoleOutput.setText("Use the url #clearconsole to clear\n\n\n\n\n\n\n\n");
+    logsOutput.setText("! Use the url #clearlogs to clear. #list to list available urls\n\n\n");
 
     Panther.setWebViewClient(new WebViewClient() {
       @Override
-    public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-        String url = request.getUrl().toString();
-        
-        // Leer las URLs de adservers.txt en assets
+      public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+        final String url = request.getUrl().toString();
+        final Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.post(new Runnable() {
+          @Override
+          public void run() {
+            logsOutput.append("+ Request for " + url + "\n");
+          }
+        });
+
         List<String> adServers = loadAdServersFromAssets(view.getContext());
-        
-        // Verificar si la URL solicitada coincide con alguna URL de adservers.txt
         if (blockerEnabled != false && adServers != null  && adServers.size() > 0) {
-            for (String adServerUrl : adServers) {
-                if (url.contains(adServerUrl)) {
-                    String adBlockerCode = "" 
-                      + "<!doctype html><html><head><meta charset='utf-8'></head>"
-                      + "<body><h1>Panther AD Blocker</h1>" 
-                      + "Blocked '" + adServerUrl + "' AD Server."
-                      + "</body></html>";
-                    InputStream adBlockerPage = new ByteArrayInputStream(adBlockerCode.getBytes(StandardCharsets.UTF_8));
-                    return new WebResourceResponse("text/html", "utf-8", adBlockerPage);
+          for (String adServerUrl : adServers) {
+            if (url.contains(adServerUrl)) {
+              final String auxAdServerUrl = adServerUrl;
+              final String auxUrl = url;
+              final Handler mHandler2 = new Handler(Looper.getMainLooper());
+              mHandler2.post(new Runnable() {
+                @Override
+                public void run() {
+                  logsOutput.append("- PANTHER_BLOCKER: " + auxUrl + " blocked using regex /" + auxAdServerUrl + "/g\n");
                 }
+              });
+
+              String adBlockerCode = "" 
+                + "<!doctype html><html><head><meta charset='utf-8'></head>"
+                + "<body><h1>Panther AD Blocker</h1>" 
+                + "Blocked '" + adServerUrl + "' AD Server."
+              + "</body></html>";
+              InputStream adBlockerPage = new ByteArrayInputStream(adBlockerCode.getBytes(StandardCharsets.UTF_8));
+              return new WebResourceResponse("text/html", "utf-8", adBlockerPage);
             }
+          }
         }
         
-        // Permitir todas las demás solicitudes
         return super.shouldInterceptRequest(view, request);
       }
 
       private List<String> loadAdServersFromAssets(Context context) {
-    List<String> adServers = new ArrayList<>();
-    BufferedReader reader = null;
-    try {
-        // Abrir el archivo adservers.txt en assets
-        InputStream is = context.getAssets().open("adservers.txt");
-        reader = new BufferedReader(new InputStreamReader(is));
-        String line;
-        while ((line = reader.readLine()) != null) {
-            // Agregar cada línea (que representa una URL de servidor de anuncios) a la lista
-            adServers.add(line.trim()); // trim() para eliminar espacios en blanco al inicio y final
-        }
-    } catch (IOException e) {
-        e.printStackTrace();
-    } finally {
-        if (reader != null) {
+        List<String> adServers = new ArrayList<>();
+        BufferedReader reader = null;
+        try {
+          InputStream is = context.getAssets().open("adservers.txt");
+          reader = new BufferedReader(new InputStreamReader(is));
+          String line;
+          while ((line = reader.readLine()) != null) {
+            adServers.add(line.trim()); 
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
+        } finally {
+          if (reader != null) {
             try {
-                reader.close();
+              reader.close();
             } catch (IOException e) {
-                e.printStackTrace();
+              e.printStackTrace();
             }
+          }
         }
-    }
-    return adServers;
-}
-
-
-
+        return adServers;
+      }
 
 
       @Override 
       public void onPageFinished(WebView view, String url) {
+        final String auxUrl = url;
+        final Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.post(new Runnable() {
+          @Override
+          public void run() {
+            logsOutput.append("-> " + auxUrl + " loaded\n\n");
+          }
+        });
+
         super.onPageFinished(view, url);
       }
 
       @Override
       public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        final String auxUrl = url;
+        final Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.post(new Runnable() {
+          @Override
+          public void run() {
+            logsOutput.append("> Redirecting to " + auxUrl + "\n");
+          }
+        });
+
         return false;
       }
     });
@@ -304,9 +346,9 @@ public class MainActivity extends Activity {
  
       @Override
       public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-        String message = consoleMessage.message() + " -- From line " +
-          consoleMessage.lineNumber() + " of " +
-          consoleMessage.sourceId();
+        String message = consoleMessage.message() + " -- From line "
+          + consoleMessage.lineNumber() + " of "
+        + consoleMessage.sourceId();
         consoleOutput.append(message + "\n");
         return true;
       }
@@ -318,14 +360,22 @@ public class MainActivity extends Activity {
         if (!dialogShowing) {
           dialogShowing = true;
           AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-          builder.setMessage(message).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+          final TextView textView = new TextView(MainActivity.this);
+          textView.setText(message);
+          textView.setTypeface(Typeface.MONOSPACE);
+          textView.setPadding(32, 32, 32, 32);
+          textView.setTextIsSelectable(true);
+
+          ScrollView scrollView = new ScrollView(MainActivity.this);
+          scrollView.addView(textView);
+
+          builder.setView(scrollView).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
               result.confirm();
               dialogShowing = false;
             }
           }).setCancelable(false).show();
-
           return true;
         }
         return false;
@@ -362,21 +412,20 @@ public class MainActivity extends Activity {
           input.setText(defaultValue);
 
           AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-          builder.setMessage(message).setView(input)
-            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-              @Override
-              public void onClick(DialogInterface dialog, int which) {
-                String value = input.getText().toString();
-                result.confirm(value);
-                dialogShowing = false;
-              }
-            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-              @Override
-              public void onClick(DialogInterface dialog, int which) {
-                result.cancel();
-                dialogShowing = false;
-              }
-            }).setCancelable(false).show();
+          builder.setMessage(message).setView(input).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+              String value = input.getText().toString();
+              result.confirm(value);
+              dialogShowing = false;
+            }
+          }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+              result.cancel();
+              dialogShowing = false;
+            }
+          }).setCancelable(false).show();
           return true;
         }
         return false;
@@ -387,21 +436,17 @@ public class MainActivity extends Activity {
     url = (EditText) findViewById(R.id.url);
     url.setText("PANTHER");
 
-    /* Panther.loadUrl("http://www.google.com"); */
     /* Panther.loadUrl("https://www.startpage.com"); */
     /* This configures the Search Engine for Privacy before usage */
     Panther.loadUrl("https://www.startpage.com/do/mypage.pl?prfe=449a86aead17f960544d34b1551bb169bc5a2a309ac760de96cf64a4273cee7234af643ebc051ef75227121e6b14d907cc8322d8ff38fcc5edf75d4fdc9358c4fe551829452f29e105cbf242ba");
 
-    // Define una instancia de ValueCallback fuera del método onClick
     final ValueCallback < String > resultCallback = new ValueCallback < String > () {
       @Override
       public void onReceiveValue(String value) {
-        // Aquí puedes manejar la respuesta del comando JavaScript, si es necesario
         consoleOutput.append("Result: " + value + "\n");
       }
     };
 
-    // Configura el OnClickListener para el botón executeButton
     executeButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -409,7 +454,6 @@ public class MainActivity extends Activity {
         Panther.evaluateJavascript(jsCommand, resultCallback);
       }
     });
-    
     
     Panther.setDownloadListener(new MyDownloadListener());
   }
@@ -420,26 +464,46 @@ public class MainActivity extends Activity {
 
     UAI = url.getText().toString();
 
-    if (UAI.startsWith("www.")) {
+    if (UAI.startsWith("#list")) {
+      final ValueCallback < String > resultCallback = new ValueCallback < String > () {
+        @Override
+        public void onReceiveValue(String value) {}
+      };
+      Panther.evaluateJavascript("alert('Available Urls\\n\\n"
+        + "#code           Show Source Code\\n"
+        + "#cookie         Show The Cookies\\n"
+        + "#clearconsole   Clear The Console\\n"
+        + "#clearlogs      Clear The Logs\\n"
+        + "#url            Shows Current Url\\n"
+        + "')",
+      resultCallback); 
+    } else if (UAI.startsWith("#clearconsole")) {
+      consoleOutput.setText("Use the url #clearconsole to clear\n\n\n\n\n\n\n\n");
+    } else if (UAI.startsWith("#clearlogs")) {
+      logsOutput.setText("! Use the url #clearlogs to clear\n\n\n");
+    } else if (UAI.startsWith("#url")) {
+      final ValueCallback < String > resultCallback = new ValueCallback < String > () {
+        @Override
+        public void onReceiveValue(String value) {}
+      };
+      Panther.evaluateJavascript("alert(window.location)", resultCallback); 
+    } else if (UAI.startsWith("www.")) {
       UAI = "https://" + UAI;
       Panther.loadUrl(UAI);
     } else if (UAI.startsWith("http://") || UAI.startsWith("https://") || UAI.startsWith("file://")) {
       Panther.loadUrl(url.getText().toString());
     } else if (UAI.startsWith("#cod")) {
-      UAI = "javascript:document.write(\"<xmp contenteditable=\\\"true\\\" style=\\\"width:100%;height:300px;overflow-y:scroll;background-color:black;color:green;align:center\\\">\"+document.getElementsByTagName('html')[0].outerHTML+\"</xmp>\"+document.getElementsByTagName('html')[0].outerHTML);";
-      Panther.loadUrl(UAI);
-      UAI = "";
+     final ValueCallback < String > resultCallback = new ValueCallback < String > () {
+        @Override
+        public void onReceiveValue(String value) {}
+      };
+      Panther.evaluateJavascript("alert(document.querySelectorAll('html')[0].outerHTML)", resultCallback);  
     } else if (UAI.startsWith("#cookie")) {
-      UAI = "javascript:document.write(\"<xmp contenteditable=\\\"true\\\" style=\\\"width:100%;height:300px;overflow-y:scroll;background-color:black;color:green;align:center\\\">\"+document.cookie+\"</xmp>\"+document.getElementsByTagName('html')[0].outerHTML);";
-      Panther.loadUrl(UAI);
-      UAI = "";
-    } else if (UAI.startsWith("#arch")) {
-      intentArchivos = new Intent(MainActivity.this, ActividadArchivos.class);
-      startActivity(intentArchivos);
-    } else if (UAI.startsWith("#cake")) {
-      UAI = "javascript:document.cookie='enableCAKE=SI;path=/;expires=Thu, 17 Sep 2021 22:23:24'";
-      Panther.loadUrl(UAI);
-      UAI = "";
+      final ValueCallback < String > resultCallback = new ValueCallback < String > () {
+        @Override
+        public void onReceiveValue(String value) {}
+      };
+      Panther.evaluateJavascript("alert(document.cookie)", resultCallback);  
     } else {
       UAI = SSE + UAI;
       Panther.loadUrl(UAI);

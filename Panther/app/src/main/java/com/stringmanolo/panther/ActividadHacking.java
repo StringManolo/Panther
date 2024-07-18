@@ -6,7 +6,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.ListView;  
-import android.widget.Toast;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.content.Intent;
 
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Button;
 
 public class ActividadHacking extends Activity {
   private EditText etUserAgent;
