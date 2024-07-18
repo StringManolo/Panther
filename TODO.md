@@ -1,6 +1,5 @@
 - Try to Hijack DNS (to allow user to override system default DNS servers)
 - Allow user to configure the use of Cache
-- Allow user to configure the use of javascript
 - Allow user to configure the use of localstorage
 - Allow user to set default search engine
 - Add more search engines from userlookup?
