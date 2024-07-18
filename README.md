@@ -20,7 +20,7 @@ Panther is a privacy-focused Android browser based on WebView.
 
 - InApp Logs
   - You can view all the requests the browser sends
-  - You can view all the requests blocked by Panther_Blocker
+  - You can view all the requests blocked by Panther_Blocker (request is made but the result is ignored)
 <br>
 
 - Basic Browser Functionality
