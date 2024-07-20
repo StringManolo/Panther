@@ -57,6 +57,17 @@ import android.os.Looper;
 
 import java.net.URL;
 import android.webkit.JavascriptInterface;
+import android.widget.RelativeLayout;
+
+import android.view.MotionEvent;
+import android.graphics.drawable.GradientDrawable;                                     
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.WindowManager;
+import android.view.ViewTreeObserver;
 
 
 public class MainActivity extends Activity {
@@ -264,7 +275,7 @@ public class MainActivity extends Activity {
     Scriptable.getSettings().setUserAgentString(userAgentModificado);
     Scriptable.setWebViewClient(new WebViewClient());
     Scriptable.setWebChromeClient(new WebChromeClient());
-    Panther.addJavascriptInterface(new SCRIPTABLE(), "scriptable");
+    Panther.addJavascriptInterface(new SCRIPTABLE(this), "scriptable");
 
 
     consoleOutput.setText("Use the url #clearconsole to clear\n\n\n\n\n\n\n\n");
@@ -703,6 +714,15 @@ public class MainActivity extends Activity {
 
   /* For Scriptable WebView */
   public class SCRIPTABLE {
+    private MainActivity activity;
+
+ 
+    public SCRIPTABLE(MainActivity activity) {
+      this.activity = activity;
+    }
+
+
+
     @JavascriptInterface
     public boolean test() {
       return true;
@@ -720,6 +740,93 @@ public class MainActivity extends Activity {
       });
     }
 
-  }
+    @JavascriptInterface
+    public void resize(final int x, final int y) {
+      final Handler scriptableHandler = new Handler(Looper.getMainLooper());
+      scriptableHandler.post(new Runnable() {
+        @Override
+        public void run() {
+          // logsOutput.append("+ Request for " + url + "\n");
+          RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(x, y);
+          params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
+          Scriptable.setLayoutParams(params);
+        }
+      });
+    }
+
+
+
+@JavascriptInterface
+    public void click(final int x, final int y) {
+      final Handler scriptableHandler = new Handler(Looper.getMainLooper());
+      scriptableHandler.post(new Runnable() {
+        @Override
+        public void run() {
+
+          MotionEvent downEvent = MotionEvent.obtain(
+            System.currentTimeMillis(),
+            System.currentTimeMillis(),
+            MotionEvent.ACTION_DOWN,
+            x,
+            y,
+            0
+          );
+
+          MotionEvent upEvent = MotionEvent.obtain(
+            System.currentTimeMillis(),
+            System.currentTimeMillis(),
+            MotionEvent.ACTION_UP,
+            x,
+            y,
+            0
+          );
+
+          // Show in Scriptable where the click has been made
+          final View clickEffect = new View(activity);
+          GradientDrawable shape = new GradientDrawable();
+          shape.setShape(GradientDrawable.OVAL);
+          shape.setColor(0xFFFF0000); // red
+          shape.setSize(50, 50);
+          clickEffect.setBackground(shape);
+
+          // Center the circle
+          int clickX = x - 25;
+          int clickY = y - 25;
+
+          FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(50, 50);
+
+          clickEffect.setX(clickX);
+          clickEffect.setY(clickY);
+
+          //final RelativeLayout rootLayout = findViewById(R.id.rootlayout);
+          final WebView rootLayout = findViewById(R.id.scriptable);
+          rootLayout.addView(clickEffect, params);
+
+          // Remove the circle after 500ms
+          new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+              rootLayout.removeView(clickEffect);
+            }
+          }, 400);
+
+          // Send the actual click
+          Scriptable.dispatchTouchEvent(downEvent);
+          Scriptable.dispatchTouchEvent(upEvent);
+        }
+      });
+    }
+
+
+
+
+
+
+
+
+
+
+
+  }
 }

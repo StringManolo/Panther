@@ -6,3 +6,4 @@
 - Allow to change default webpage
 - Add new privacy overrides (like battery status) This seems very hard to do.
 - Allow to use System's Tor Proxy
+- Activate Interface only when Scriptable is visiable

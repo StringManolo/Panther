@@ -18,6 +18,7 @@
 
 
   <script>
+/*
     console.log("Starting connection to ws://127.0.0.1:13370 ... ");
     const socket = new WebSocket("ws://localhost:13370");
 
@@ -38,7 +39,7 @@
     socket.addEventListener("error", function (event) {
       console.error("WebSocket error: ", event);
     });
-
+*/
 
     /* API */
       const navigate = url => {
@@ -53,7 +54,8 @@
     /* SCRIPTS */
       /* PROTONMAIL ACCOUNT */
       const newProtonMailAccount = (username, password) => {
-        navigate("https://account.proton.me/mail/signup?plan=free&ref=mail_plus_intro-mailpricing-2&currency=EUR");
+        //navigate("https://account.proton.me/mail/signup?plan=free&ref=mail_plus_intro-mailpricing-2&currency=EUR");
+        navigate("https://www.google.com/search?q=cars");
       }
       document.querySelector("#npa").addEventListener("click", () => {
         newProtonMailAccount("test", "test123");
