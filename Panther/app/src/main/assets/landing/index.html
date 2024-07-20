@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panther Browser</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Panther Browser</h1>
+        <a class="download-button" href="https://github.com/StringManolo/Panther/releases/download/V1.0.7/Panther_stable_ver.1.0.7.apk">Download Panther</a>
+    </header>
+
+    <main>
+        <section id="instructions">
+            <h2>How to Use Panther</h2>
+            <p>Follow these instructions to get the most out of Panther Browser:</p>
+            <ol>
+                <li>Download the Panther APK from the link above.</li>
+                <li>Install the APK on your Android device.</li>
+                <li>Open Panther and start browsing privately.</li>
+                <li>Enable/Disable features from the settings menu as needed.</li>
+            </ol>
+        </section>
+
+        <section id="features">
+            <h2>Features</h2>
+            <ul>
+                <li><strong>Blocker</strong>
+                    <ul>
+                        <li>Blocks common AD servers by replacing the downloaded AD by a custom file.</li>
+                        <li>Blocks common Trackers by replacing the downloaded javascript by a custom file.</li>
+                        <li>You can Enable/Disable the Blocker.</li>
+                        <li>Try accessing <a href="https://google.com/search?q=Panther_Blocker_Test" target="_blank">Panther Blocker Test</a> to confirm it's working.</li>
+                        <li>List of blocked strings: <a href="https://github.com/StringManolo/Panther/blob/master/Panther/app/src/main/assets/adservers.txt" target="_blank">Blocked Ad Servers</a></li>
+                    </ul>
+                </li>
+                <li><strong>Console Support</strong>
+                    <ul>
+                        <li>View console.log in Android, run commands, etc.</li>
+                    </ul>
+                </li>
+                <li><strong>InApp Logs</strong>
+                    <ul>
+                        <li>View all the requests the browser sends.</li>
+                        <li>View all the requests blocked by Panther_Blocker (request is made but the result is ignored).</li>
+                    </ul>
+                </li>
+                <li><strong>Basic Browser Functionality</strong></li>
+                <li><strong>Hardcoded User-Agent by Default</strong>
+                    <ul>
+                        <li>User-Agents typically reveal your operating system and browser version to every website you visit.</li>
+                        <li>Panther overwrites the `navigator.userAgent` property to protect you from JavaScript fingerprinting attacks.</li>
+                        <li>Default User-Agent: "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.122 Mobile Safari/537.36".</li>
+                    </ul>
+                </li>
+                <li><strong>Editable User-Agent</strong>
+                    <ul>
+                        <li>Go to Hacking -> User-Agent -> Set your own and tap the "GO" button.</li>
+                    </ul>
+                </li>
+                <li><strong>Change Search Engine</strong></li>
+                <li><strong>Disable/Enable JavaScript</strong></li>
+                <li><strong>Allows Zoom In/Out even when webpages try to disable it</strong></li>
+                <li><strong>Clears Internal History upon Opening</strong>
+                    <ul>
+                        <li>Internal history is only saved to allow navigation between pages.</li>
+                    </ul>
+                </li>
+                <li><strong>Clears Internal Cache upon Opening</strong>
+                    <ul>
+                        <li>Internal cache is only saved during the session for faster page loading.</li>
+                    </ul>
+                </li>
+                <li><strong>Special URLs</strong>
+                    <ul>
+                        <li><code>#list</code> - List all available URLs</li>
+                        <li><code>#code</code> - Shows rendered source code</li>
+                        <li><code>#cookie</code> - Shows website cookies</li>
+                        <li><code>#clearconsole</code> - Clear the console</li>
+                        <li><code>#clearlogs</code> - Clear the logs</li>
+                        <li><code>#url</code> - Shows Current URL</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Panther Browser. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+

@@ -7,7 +7,10 @@
   <string name="title_activity_main">MAIN_ACTIVITY</string>
 
   <string-array name="array_technology">
-    <item>Blocker</item>
+    <item>Block ADS/Trackers</item>
+    <!-- This Feature is in early dev and breaks pages, not usefull for users yet
+      <item>Block Fingerprint</item>
+    -->
     <item>Console</item>
     <item>Javascript</item>
     <item>Logs</item>

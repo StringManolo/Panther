@@ -55,6 +55,8 @@ import android.widget.ScrollView;
 import android.os.Handler;
 import android.os.Looper;
 
+import java.net.URL;
+
 public class MainActivity extends Activity {
   Intent intentArchivos = null;
   Intent intentMotorDeBusq = null;
@@ -65,6 +67,7 @@ public class MainActivity extends Activity {
   private WebView Panther;
   private ProgressBar progressBar;
   private EditText url;
+  private EditText omnibox;
   private ImageView iconoBarra;
   private View rectanguloMenuIcono;
 
@@ -86,6 +89,7 @@ public class MainActivity extends Activity {
   int progress = 0;
   boolean jsEnabled = true;
   boolean blockerEnabled = true;
+  boolean blockFingerprintEnabled = false;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -162,7 +166,7 @@ public class MainActivity extends Activity {
           Panther.getSettings().setJavaScriptEnabled(jsEnabled);
         }
 
-        if (value.equals("Blocker")) {
+        if (value.equals("Block ADS/Trackers")) {
           if (blockerEnabled) {
             blockerEnabled = false;
             Toast.makeText(getApplicationContext(), "Blocker is now disabled", Toast.LENGTH_SHORT).show();
@@ -171,6 +175,18 @@ public class MainActivity extends Activity {
             Toast.makeText(getApplicationContext(), "Blocker is now removing ads and trackers", Toast.LENGTH_SHORT).show();
           }
         }
+
+        if (value.equals("Block Fingerprint")) {
+          if (blockFingerprintEnabled) {
+            blockFingerprintEnabled = false;
+            Toast.makeText(getApplicationContext(), "Fingerprint Blocking is Disabled", Toast.LENGTH_SHORT).show();
+          } else {
+            blockFingerprintEnabled = true;
+            Toast.makeText(getApplicationContext(), "Fingerprint Blocker is now faking Fingerprint values", Toast.LENGTH_SHORT).show();
+          }
+        }
+
+
         
         if (value.equals("Exit")) {
           Panther.clearCache(true);
@@ -242,14 +258,14 @@ public class MainActivity extends Activity {
         List<String> adServers = loadAdServersFromAssets(view.getContext());
         if (blockerEnabled != false && adServers != null  && adServers.size() > 0) {
           for (String adServerUrl : adServers) {
-            if (url.contains(adServerUrl)) {
+            if (url.toLowerCase().contains(adServerUrl)) {
               final String auxAdServerUrl = adServerUrl;
               final String auxUrl = url;
               final Handler mHandler2 = new Handler(Looper.getMainLooper());
               mHandler2.post(new Runnable() {
                 @Override
                 public void run() {
-                  logsOutput.append("- PANTHER_BLOCKER: " + auxUrl + " blocked using regex /" + auxAdServerUrl + "/g\n");
+                  logsOutput.append("- PANTHER_AD_TRACKER_BLOCKER: " + auxUrl + " blocked using regex /" + auxAdServerUrl + "/gi\n");
                 }
               });
 
@@ -263,9 +279,66 @@ public class MainActivity extends Activity {
             }
           }
         }
-        
+       /* Inyect JS here: */
+        //if (url.endsWith(".html") || url.endsWith(".htm") || url.endsWith("/") || url.endsWith("/javascript")) { // add php etc
+          try {
+            InputStream inputStream = new URL(url).openStream();
+            String html = readStream(inputStream);
+
+            if (blockFingerprintEnabled != false && html.contains("<html") && html.contains("<head")) {
+            // Modifica el HTML para incluir el script
+            String injectedScript = 
+              "<script>"
+              + "(function() {"
+                + "const fakeBattery = {"
+                + "  level: 0.75,"
+                + "  charging: true,"
+                + "  chargingTime: 0,"
+                + "  dischargingTime: Infinity,"
+                + "  addEventListener: function() {}"
+                + "};"
+                + "Object.defineProperty(navigator, 'getBattery', {"
+                + "  value: function() {"
+                + "    return Promise.resolve(fakeBattery);"
+                + "  }"
+                + "});"
+                + "if ('BatteryManager' in window) {"
+                + "  window.BatteryManager = fakeBattery;"
+                + "}"
+              + "})();"
+            + "</script>";
+
+            /* Debug */
+            final String auxUrl = url;
+            final Handler auxHandler = new Handler(Looper.getMainLooper());
+            auxHandler.post(new Runnable() {
+              @Override
+              public void run() {
+                logsOutput.append("- PANTHER_FINGERPRINT_BLOCKER: " + auxUrl + " page was modified to prevent fingerprint");
+              }
+            });
+
+
+            String replacement = "<head>";
+            /*if (html.contains("<meta charset=\"UTF-8\">")) {
+              replacement = "<meta charset=\"UTF-8\">";
+            } else if (html.contains('<meta charset="utf-8">')) {
+              replacement = "<meta charset=\"utf-8\">";
+            } else {
+              
+            }*/ 
+
+            String modifiedHtml = html.replace(replacement,/* injectedScript +*/ replacement);
+            return new WebResourceResponse("text/html", "utf-8", new ByteArrayInputStream(modifiedHtml.getBytes(StandardCharsets.UTF_8)));
+           }
+          } catch (IOException e) {
+
+          }
+        //}
+        /* End JS injection */
         return super.shouldInterceptRequest(view, request);
       }
+
 
       private List<String> loadAdServersFromAssets(Context context) {
         List<String> adServers = new ArrayList<>();
@@ -300,6 +373,7 @@ public class MainActivity extends Activity {
           @Override
           public void run() {
             logsOutput.append("-> " + auxUrl + " loaded\n\n");
+            omnibox.setText(auxUrl);
           }
         });
 
@@ -434,11 +508,12 @@ public class MainActivity extends Activity {
 
     iconoBarra = (ImageView) findViewById(R.id.favicon);
     url = (EditText) findViewById(R.id.url);
+    omnibox = (EditText) findViewById(R.id.url);
     url.setText("PANTHER");
 
-    /* Panther.loadUrl("https://www.startpage.com"); */
-    /* This configures the Search Engine for Privacy before usage */
-    Panther.loadUrl("https://www.startpage.com/do/mypage.pl?prfe=449a86aead17f960544d34b1551bb169bc5a2a309ac760de96cf64a4273cee7234af643ebc051ef75227121e6b14d907cc8322d8ff38fcc5edf75d4fdc9358c4fe551829452f29e105cbf242ba");
+
+    Panther.loadUrl("https://html.duckduckgo.com/html/");
+    //Panther.loadUrl("file:///android_asset/landing/index.html");
 
     final ValueCallback < String > resultCallback = new ValueCallback < String > () {
       @Override
@@ -578,4 +653,16 @@ public class MainActivity extends Activity {
       }
     }
   }
+
+  /* For js injection */
+  private String readStream(InputStream inputStream) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder result = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            result.append(line).append("\n");
+        }
+        reader.close();
+        return result.toString();
+    }
 }

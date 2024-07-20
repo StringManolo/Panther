@@ -465,6 +465,8 @@ track.php
 tracker.php
 tracker.js
 tracker.min.js
+tracker
+tracking
 track.js
 track.min.js
 fingerprint
