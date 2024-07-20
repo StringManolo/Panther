@@ -59,7 +59,7 @@ Panther is a privacy-focused Android browser based on WebView.
 - Allows Zoom In/Out even when webpages try to disable it
 <br>
 
-- Clears internal history upon closing the browser (use the Exit option in the scollable menu):
+- Clears internal history upon closing the browser (use the Exit option in the scrollable menu):
   - Internal history is only saved to allow navigation between pages
 <br>
 
@@ -78,7 +78,7 @@ Panther is a privacy-focused Android browser based on WebView.
 
 ### Scriptable
 #### Scriptable Status
-- Early development, only able to control it using the console calling it's api methods
+- Early development, only able to control it using the console and javascript calling it's api methods. Local Servers are still under early development.
 
 #### Scriptable API
 ##### open
