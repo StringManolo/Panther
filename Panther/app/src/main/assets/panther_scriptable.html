@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og:http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <title>Panther Scriptable</title>
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+  <h1>Panther Scriptable</h1>
+  <section>
+    <article>
+      <button id="npa">New Protonmail Account</button>
+    </article>
+  </section>
+
+
+  <script>
+    console.log("Starting connection to ws://127.0.0.1:13370 ... ");
+    const socket = new WebSocket("ws://localhost:13370");
+
+    socket.addEventListener("open", function (event) {
+      console.log("Connected to WebSocket server");
+      socket.send("Hello Server!");
+    });
+
+    socket.addEventListener("message", function (event) {
+      console.log("Message from server: ", event.data);
+      // Do stuff here (using interfaces?)
+    });
+
+    socket.addEventListener("close", function (event) {
+      console.log("Disconnected from WebSocket server");
+    });
+
+    socket.addEventListener("error", function (event) {
+      console.error("WebSocket error: ", event);
+    });
+
+
+    /* API */
+      const navigate = url => {
+        console.log("Navigating to ", url);
+        if (scriptable.test()) {
+          scriptable.open(url, '_blank');
+        } else {
+          console.log("Scriptable interface is not available");
+        }
+      }
+
+    /* SCRIPTS */
+      /* PROTONMAIL ACCOUNT */
+      const newProtonMailAccount = (username, password) => {
+        navigate("https://account.proton.me/mail/signup?plan=free&ref=mail_plus_intro-mailpricing-2&currency=EUR");
+      }
+      document.querySelector("#npa").addEventListener("click", () => {
+        newProtonMailAccount("test", "test123");
+      });
+
+
+  </script>
+</body>
+</html>
+

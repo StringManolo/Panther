@@ -27,7 +27,8 @@
     <item>Favorites</item>
      <item>Computer View</item>
     -->
-    <item>Hacking</item>
+     <item>Hacking</item>
+     <item>Scriptable</item>
     <item>Exit</item>
   </string-array>
 

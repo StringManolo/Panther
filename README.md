@@ -5,6 +5,11 @@ Panther is a privacy-focused Android browser based on WebView.
   
 
 ### Features
+- Scriptable
+  - Allows you to control a second brower embeeded inside Panther
+  - Allows you to control the second browser using scripting languages like js, python, lua ...
+  - Read the section at the end if you interested in the Status of this feature
+
 - Blocker
   - Blocks common AD servers by replacing the downloaded AD by a custom file
   - Blocks common Trackers by replacing the downloaded javascript by a custom file
@@ -61,4 +66,16 @@ Panther is a privacy-focused Android browser based on WebView.
   - `#clearconsole` - Clear the console
   - `#clearlogs` - Clear the logs
   - `#url` - Shows Current Url
+<br>
 
+### Scriptable
+#### Scriptable Status
+- Early development, only able to control it using the console calling it's api methods
+
+#### Scriptable API
+##### open
+- Description: Open a webpage in the scriptable browser  
+- Syntaxis:
+```javascript
+scriptable.open("https;//www.google.com/search?q=car", "");
+```

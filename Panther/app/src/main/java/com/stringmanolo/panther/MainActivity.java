@@ -56,6 +56,8 @@ import android.os.Handler;
 import android.os.Looper;
 
 import java.net.URL;
+import android.webkit.JavascriptInterface;
+
 
 public class MainActivity extends Activity {
   Intent intentArchivos = null;
@@ -65,6 +67,7 @@ public class MainActivity extends Activity {
   private static final int CODEHackingIntent = 0;
 
   private WebView Panther;
+  private WebView Scriptable;
   private ProgressBar progressBar;
   private EditText url;
   private EditText omnibox;
@@ -90,6 +93,7 @@ public class MainActivity extends Activity {
   boolean jsEnabled = true;
   boolean blockerEnabled = true;
   boolean blockFingerprintEnabled = false;
+  boolean scriptableEnabled = false;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -97,6 +101,7 @@ public class MainActivity extends Activity {
     setContentView(R.layout.activity_main);
 
     Panther = (WebView) findViewById(R.id.webkit);
+    Scriptable = (WebView) findViewById(R.id.scriptable);
 
     logsOutput = (TextView) findViewById(R.id.logsOutput);
 
@@ -187,6 +192,18 @@ public class MainActivity extends Activity {
         }
 
 
+        if (value.equals("Scriptable")) {
+          if (scriptableEnabled) {
+            scriptableEnabled = false; 
+            Scriptable.setVisibility(View.INVISIBLE);
+          } else {
+            scriptableEnabled = true;
+            Scriptable.setVisibility(View.VISIBLE);
+            Panther.loadUrl("file:///android_asset/panther_scriptable.html");
+          }
+        } 
+
+
         
         if (value.equals("Exit")) {
           Panther.clearCache(true);
@@ -219,6 +236,7 @@ public class MainActivity extends Activity {
     consoleOutput.setVisibility(View.INVISIBLE);
     consoleInput.setVisibility(View.INVISIBLE);
     executeButton.setVisibility(View.INVISIBLE);
+    Scriptable.setVisibility(View.INVISIBLE);
 
     if (Build.VERSION.SDK_INT < 18) {
       /* Panther.getSettings().setRenderPriority(RenderPriority.HIGH); */
@@ -239,6 +257,15 @@ public class MainActivity extends Activity {
     Panther.getSettings().setUseWideViewPort(true);
     Panther.getSettings().setLoadWithOverviewMode(true);
     Panther.getSettings().setBuiltInZoomControls(true);
+
+    /* Sxriptable webview */
+    Scriptable.getSettings().setJavaScriptEnabled(true);
+    Scriptable.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+    Scriptable.getSettings().setUserAgentString(userAgentModificado);
+    Scriptable.setWebViewClient(new WebViewClient());
+    Scriptable.setWebChromeClient(new WebChromeClient());
+    Panther.addJavascriptInterface(new SCRIPTABLE(), "scriptable");
+
 
     consoleOutput.setText("Use the url #clearconsole to clear\n\n\n\n\n\n\n\n");
     logsOutput.setText("! Use the url #clearlogs to clear. #list to list available urls\n\n\n");
@@ -396,6 +423,14 @@ public class MainActivity extends Activity {
     });
 
     Panther.setWebChromeClient(new WebChromeClient() { 
+      /* @Override
+      public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, android.os.Message resultMsg) {
+        // TODO: Manage new windows
+        return true;
+      }
+      */
+
+
       @Override
       public void onPermissionRequest(final PermissionRequest request) {
         final String[] requestedPermissions = request.getResources();
@@ -665,4 +700,26 @@ public class MainActivity extends Activity {
         reader.close();
         return result.toString();
     }
+
+  /* For Scriptable WebView */
+  public class SCRIPTABLE {
+    @JavascriptInterface
+    public boolean test() {
+      return true;
+    }
+
+    @JavascriptInterface
+    public void open(final String url, String dummy) {
+      final Handler scriptableHandler = new Handler(Looper.getMainLooper());
+      scriptableHandler.post(new Runnable() {
+        @Override
+        public void run() {
+          // logsOutput.append("+ Request for " + url + "\n");
+          Scriptable.loadUrl(url);
+        }
+      });
+    }
+
+  }
+
 }
