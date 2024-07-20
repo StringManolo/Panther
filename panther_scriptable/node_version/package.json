@@ -1,0 +1,11 @@
+{
+  "name": "panther_scriptable_node",
+  "version": "1.0.0",
+  "description": "Control Panther Using Node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
