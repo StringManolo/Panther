@@ -5,6 +5,10 @@ Panther is a privacy-focused Android browser based on WebView.
   
 
 ### Features
+- Scrollable Settings Menu
+  - Click the Panther Icon
+<br>
+
 - Scriptable
   - Allows you to control a second brower embeeded inside Panther
   - Allows you to control the second browser using scripting languages like js, python, lua ...
@@ -51,11 +55,11 @@ Panther is a privacy-focused Android browser based on WebView.
 - Allows Zoom In/Out even when webpages try to disable it
 <br>
 
-- Clears internal history upon opening the browser:
+- Clears internal history upon closing the browser (use the Exit option in the scollable menu):
   - Internal history is only saved to allow navigation between pages
 <br>
 
-- Clears internal cache upon opening the browser:
+- Clears internal cache upon closing the browser:
   - Internal cache is only saved during the session for faster page loading
 <br>
 
