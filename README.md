@@ -35,6 +35,9 @@ Panther is a privacy-focused Android browser based on WebView.
 - Basic Browser Functionality
 <br>
 
+- Small Size
+  - Less than 1 MB size
+
 - Hardcoded User-Agent by default:
   - User-Agents typically reveal your operating system and browser version to every website you visit.
   - Even browsers like Tor Browser do not fully address this issue. When they do, they only overwrite the HTTP headers to fake it.
