@@ -79,3 +79,10 @@ Panther is a privacy-focused Android browser based on WebView.
 ```javascript
 scriptable.open("https;//www.google.com/search?q=car", "");
 ```
+
+##### click
+- Decription: Send click to a coordinate in the Scriptable browser
+- Syntaxis:
+```javascript
+scriptable.click(160, 235); // click the Images Tab in google search
+```
