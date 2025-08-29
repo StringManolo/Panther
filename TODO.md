@@ -7,4 +7,4 @@
 - Add new privacy overrides (like battery status) This seems very hard to do.
 - Allow to use System's Tor Proxy
 - Activate Interface only when Scriptable is visiable
-- Test how viabke is to insert polyfills in webpages to make old webviews work with most modern web features
+- Test how viable is to insert polyfills in webpages to make old webviews work with most modern web features

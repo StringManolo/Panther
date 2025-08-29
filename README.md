@@ -1,4 +1,4 @@
-# Panther &nbsp; &nbsp; &nbsp; &nbsp; [![Download Panther](https://img.shields.io/badge/Download-Panther-blue)](https://github.com/StringManolo/Panther/releases/download/V1.0.9/Panther_stable_ver.1.0.9.apk)
+# Panther &nbsp; &nbsp; &nbsp; &nbsp; [![Download Panther](https://img.shields.io/badge/Download-Panther-blue)](https://github.com/StringManolo/Panther/releases/download/V1.0.10/Panther_stable_ver.1.0.10.apk)
 
 
 Panther is a privacy-focused Android browser based on WebView.  
@@ -89,8 +89,38 @@ scriptable.open("https;//www.google.com/search?q=car", "");
 ```
 
 ##### click
-- Decription: Send click to a coordinate in the Scriptable browser
+- Description: Send click to a coordinate in the Scriptable browser
 - Syntaxis:
 ```javascript
 scriptable.click(160, 235); // click the Images Tab in google search
 ```
+
+##### resize
+- Description: Resize Scriptable.
+- Syntaxis:
+```javascript
+scriptable.resize(400, 400); // Resize to 400 width 400 height
+```
+
+##### move
+- Description: Move Scriptable around.
+- Syntaxis:
+```javascript
+scriptable.move(100, 600); // Move scriptable to the top left
+```
+
+##### goBack
+- Description: Go to previous page on history.
+- Syntaxis:
+```javascript
+scriptable.goBack();
+```
+
+##### goForward
+- Description: Go to next page on history.
+- Syntaxis:
+```javascript
+scriptable.goForward();
+```
+
+

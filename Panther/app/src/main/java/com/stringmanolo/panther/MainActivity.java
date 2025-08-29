@@ -60,7 +60,7 @@ import android.webkit.JavascriptInterface;
 import android.widget.RelativeLayout;
 
 import android.view.MotionEvent;
-import android.graphics.drawable.GradientDrawable;                                     
+import android.graphics.drawable.GradientDrawable;                     
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -171,7 +171,7 @@ public class MainActivity extends Activity {
           }
         }
 
-        if (value.equals("Javascript")) {   
+        if (value.equals("Javascript")) {
           if (jsEnabled) {
             jsEnabled = false;
             Toast.makeText(getApplicationContext(), "Javascript is now disabled", Toast.LENGTH_SHORT).show();
@@ -205,26 +205,26 @@ public class MainActivity extends Activity {
 
         if (value.equals("Scriptable")) {
           if (scriptableEnabled) {
-            scriptableEnabled = false; 
+            scriptableEnabled = false;
             Scriptable.setVisibility(View.INVISIBLE);
           } else {
             scriptableEnabled = true;
             Scriptable.setVisibility(View.VISIBLE);
-            Panther.loadUrl("file:///android_asset/panther_scriptable.html");
+           /* Panther.loadUrl("file:///android_asset/panther_scriptable.html"); */
           }
-        } 
+        }
 
 
-        
+
         if (value.equals("Exit")) {
           Panther.clearCache(true);
           Panther.clearFormData();
-   
+
           CookieManager.getInstance().removeSessionCookies(null);
           CookieManager.getInstance().removeAllCookies(null);
           Panther.clearHistory();
           WebStorage.getInstance().deleteAllData();
-          
+
           /* Delete internal cache folder */
           File cacheDir = getCacheDir();
           if (cacheDir.isDirectory()) {
@@ -234,7 +234,7 @@ public class MainActivity extends Activity {
               temp.delete();
             }
           }
-          
+
           finish();
         }
       }
@@ -257,7 +257,7 @@ public class MainActivity extends Activity {
     Panther.getSettings().setLoadWithOverviewMode(true);
     Panther.getSettings().setDomStorageEnabled(true);
     Panther.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-    Panther.setScrollbarFadingEnabled(true); 
+    Panther.setScrollbarFadingEnabled(true);
     Panther.getSettings().setJavaScriptEnabled(true);
 
     //String userAgent = new WebView(this).getSettings().getUserAgentString();
@@ -307,9 +307,9 @@ public class MainActivity extends Activity {
                 }
               });
 
-              String adBlockerCode = "" 
+              String adBlockerCode = ""
                 + "<!doctype html><html><head><meta charset='utf-8'></head>"
-                + "<body><h1>Panther AD Blocker</h1>" 
+                + "<body><h1>Panther AD Blocker</h1>"
                 + "Blocked '" + adServerUrl + "' AD Server."
               + "</body></html>";
               InputStream adBlockerPage = new ByteArrayInputStream(adBlockerCode.getBytes(StandardCharsets.UTF_8));
@@ -325,7 +325,7 @@ public class MainActivity extends Activity {
 
             if (blockFingerprintEnabled != false && html.contains("<html") && html.contains("<head")) {
             // Modifica el HTML para incluir el script
-            String injectedScript = 
+            String injectedScript =
               "<script>"
               + "(function() {"
                 + "const fakeBattery = {"
@@ -363,8 +363,8 @@ public class MainActivity extends Activity {
             } else if (html.contains('<meta charset="utf-8">')) {
               replacement = "<meta charset=\"utf-8\">";
             } else {
-              
-            }*/ 
+
+            }*/
 
             String modifiedHtml = html.replace(replacement,/* injectedScript +*/ replacement);
             return new WebResourceResponse("text/html", "utf-8", new ByteArrayInputStream(modifiedHtml.getBytes(StandardCharsets.UTF_8)));
@@ -386,7 +386,7 @@ public class MainActivity extends Activity {
           reader = new BufferedReader(new InputStreamReader(is));
           String line;
           while ((line = reader.readLine()) != null) {
-            adServers.add(line.trim()); 
+            adServers.add(line.trim());
           }
         } catch (IOException e) {
           e.printStackTrace();
@@ -403,7 +403,7 @@ public class MainActivity extends Activity {
       }
 
 
-      @Override 
+      @Override
       public void onPageFinished(WebView view, String url) {
         final String auxUrl = url;
         final Handler mHandler = new Handler(Looper.getMainLooper());
@@ -433,7 +433,7 @@ public class MainActivity extends Activity {
       }
     });
 
-    Panther.setWebChromeClient(new WebChromeClient() { 
+    Panther.setWebChromeClient(new WebChromeClient() {
       /* @Override
       public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, android.os.Message resultMsg) {
         // TODO: Manage new windows
@@ -445,7 +445,7 @@ public class MainActivity extends Activity {
       @Override
       public void onPermissionRequest(final PermissionRequest request) {
         final String[] requestedPermissions = request.getResources();
-        
+
         new AlertDialog.Builder(MainActivity.this)
         .setTitle("Permission Request")
         .setMessage("The website is requesting permission to access device resources.")
@@ -463,7 +463,7 @@ public class MainActivity extends Activity {
         })
         .show();
       }
- 
+
       @Override
       public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
         String message = consoleMessage.message() + " -- From line "
@@ -575,7 +575,7 @@ public class MainActivity extends Activity {
         Panther.evaluateJavascript(jsCommand, resultCallback);
       }
     });
-    
+
     Panther.setDownloadListener(new MyDownloadListener());
   }
 
@@ -597,7 +597,7 @@ public class MainActivity extends Activity {
         + "#clearlogs      Clear The Logs\\n"
         + "#url            Shows Current Url\\n"
         + "')",
-      resultCallback); 
+      resultCallback);
     } else if (UAI.startsWith("#clearconsole")) {
       consoleOutput.setText("Use the url #clearconsole to clear\n\n\n\n\n\n\n\n");
     } else if (UAI.startsWith("#clearlogs")) {
@@ -607,7 +607,7 @@ public class MainActivity extends Activity {
         @Override
         public void onReceiveValue(String value) {}
       };
-      Panther.evaluateJavascript("alert(window.location)", resultCallback); 
+      Panther.evaluateJavascript("alert(window.location)", resultCallback);
     } else if (UAI.startsWith("www.")) {
       UAI = "https://" + UAI;
       Panther.loadUrl(UAI);
@@ -618,13 +618,13 @@ public class MainActivity extends Activity {
         @Override
         public void onReceiveValue(String value) {}
       };
-      Panther.evaluateJavascript("alert(document.querySelectorAll('html')[0].outerHTML)", resultCallback);  
+      Panther.evaluateJavascript("alert(document.querySelectorAll('html')[0].outerHTML)", resultCallback);
     } else if (UAI.startsWith("#cookie")) {
       final ValueCallback < String > resultCallback = new ValueCallback < String > () {
         @Override
         public void onReceiveValue(String value) {}
       };
-      Panther.evaluateJavascript("alert(document.cookie)", resultCallback);  
+      Panther.evaluateJavascript("alert(document.cookie)", resultCallback);
     } else {
       UAI = SSE + UAI;
       Panther.loadUrl(UAI);
@@ -672,8 +672,8 @@ public class MainActivity extends Activity {
       }
     }
   }
-  
-  
+
+
   private class MyDownloadListener implements DownloadListener {
     @Override
     public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
@@ -716,7 +716,7 @@ public class MainActivity extends Activity {
   public class SCRIPTABLE {
     private MainActivity activity;
 
- 
+
     public SCRIPTABLE(MainActivity activity) {
       this.activity = activity;
     }
@@ -756,8 +756,59 @@ public class MainActivity extends Activity {
     }
 
 
+    @JavascriptInterface
+    public void move(final int x, final int y) {
+      final Handler scriptableHandler = new Handler(Looper.getMainLooper());
+      scriptableHandler.post(new Runnable() {
+        @Override
+        public void run() {
+          ViewGroup.LayoutParams currentParams = Scriptable.getLayoutParams();
+          RelativeLayout.LayoutParams params;
+          if (currentParams instanceof RelativeLayout.LayoutParams) {
+            params = (RelativeLayout.LayoutParams) currentParams;
+          } else {
+            params = new RelativeLayout.LayoutParams(currentParams.width, currentParams.height);
+          }
 
-@JavascriptInterface
+          params.leftMargin = x;
+          params.topMargin = y;
+        params.addRule(RelativeLayout.CENTER_IN_PARENT, 0);
+          Scriptable.setLayoutParams(params);
+        }
+      });
+    }
+
+
+    
+    @JavascriptInterface
+    public void goBack() {
+      final Handler handler = new Handler(Looper.getMainLooper());
+      handler.post(new Runnable() {
+        @Override
+        public void run() {
+          WebView scriptable = activity.findViewById(R.id.scriptable);
+          if (scriptable != null && scriptable.canGoBack()) {
+            scriptable.goBack();
+          }
+        }
+      });
+    }
+
+    @JavascriptInterface
+    public void goForward() {
+      final Handler handler = new Handler(Looper.getMainLooper());
+      handler.post(new Runnable() {
+        @Override
+        public void run() {
+          WebView scriptable = activity.findViewById(R.id.scriptable);
+          if (scriptable != null && scriptable.canGoForward()) {
+            scriptable.goForward();
+          }
+        }
+      });
+    }
+
+    @JavascriptInterface
     public void click(final int x, final int y) {
       final Handler scriptableHandler = new Handler(Looper.getMainLooper());
       scriptableHandler.post(new Runnable() {

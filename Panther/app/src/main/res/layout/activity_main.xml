@@ -15,6 +15,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
   >
+      
     <WebView
       android:id="@+id/scriptable"
       android:layout_width="200dp"
