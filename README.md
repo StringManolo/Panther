@@ -1,9 +1,9 @@
-# Panther &nbsp; &nbsp; &nbsp; &nbsp; [![Download Panther](https://img.shields.io/badge/Download-Panther-blue)](https://github.com/StringManolo/Panther/releases/download/V1.0.11/Panther_stable_ver.1.0.11.apk)
+# <img alt="panther_icon" src="https://i.imgur.com/Y3qNh07.png" width="40" valign="middle"> Panther &nbsp; &nbsp; [![Download Panther](https://img.shields.io/badge/Download-Panther-blue)](https://github.com/StringManolo/Panther/releases/download/V1.0.11/Panther_stable_ver.1.0.11.apk)
 
+Panther is a privacy-focused Android browser based on WebView.
 
-Panther is a privacy-focused Android browser based on WebView.  
+![panther_screenshot](https://github.com/user-attachments/assets/1817dd92-43ac-4225-9835-48130ee055f7)
   
-
 ### Features
 - Scrollable Settings Menu
   - Click the Panther Icon
